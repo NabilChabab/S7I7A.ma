@@ -20,14 +20,24 @@ class ResetPasswordMail extends Mailable
 
     public $resetUrl;
 
-    public function __construct($resetUrl)
+    /**
+     * Create a new message instance.
+     *
+     * @param string $email The user's email address
+     * @param string $token The reset token
+     */
+
+    public function __construct($email, $token)
     {
-        $this->resetUrl = $resetUrl;
+        // Construct the reset URL using the provided email and token
+        $this->resetUrl = 'http://localhost:8080/reset-password?token=' . $token . '&email=' . $email;
     }
 
     public function build()
     {
-        return $this->subject('Reset Your Password')->view('emails.reset_password');
+        return $this->subject('Reset Your Password')->view('emails.email')->with([
+            'email' => $this->resetUrl,
+        ]);
     }
 
     /**
@@ -46,8 +56,11 @@ class ResetPasswordMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
-        );
+        markdown: 'emails.email',
+        with: [
+            'email' => $this->resetUrl,
+        ],
+    );
     }
 
     /**

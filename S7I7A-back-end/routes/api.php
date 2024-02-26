@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\admin\DashboardHomeController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\admin\DoctorsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,17 +22,21 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);
-Route::get('/reset-password', function () {
-    
-})->name('password.reset');
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::middleware('role:admin')->get('/admin/dashboard', function () {
-        echo 'baby';
+
+    // Protect the admin dashboard route
+    Route::middleware('role:Admin')->prefix('admin')->group(function () {
+        Route::apiResource('dashboard', DashboardHomeController::class);
+        Route::apiResource('doctors', DoctorsController::class);
+    });
+    Route::middleware('role:Doctor')->get('/doctor/dashboard', function () {
+        echo 'babydoctor';
     });
 
-    Route::middleware('role:doctor')->get('/doctor/dashboard', function () {
+    Route::middleware('role:Patient')->get('/patient/dashboard', function () {
         echo 'babydoctor';
     });
 });

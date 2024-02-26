@@ -36,6 +36,18 @@ return [
             'throw' => false,
         ],
 
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path('media'),
+            'url'    => env('APP_URL').'/media',
+        ],
+
+        'users_media' => [
+            'driver' => 'local',
+            'root'   => public_path('media/users'),
+            'url'    => env('APP_URL').'/media/users',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

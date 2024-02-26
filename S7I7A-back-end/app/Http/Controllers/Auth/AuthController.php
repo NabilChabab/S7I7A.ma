@@ -20,13 +20,14 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
+            'phone' => $validatedData['phone'],
             'password' => Hash::make($validatedData['password']),
         ]);
-    
+
         $user->roles()->attach(Role::where('name', 'patient')->first()->id);
-    
+
         Auth::login($user);
-    
+
         return response()->json([
             'message' => 'User registered successfully',
             'redirect' => '/login',
@@ -40,23 +41,26 @@ class AuthController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-    
+
         $user = Auth::user();
-    
+
         if ($user->hasRole('Admin')) {
             return response()->json([
                 'message' => 'Admin login successful',
                 'redirect' => '/admin/dashboard',
                 'role' => 'Admin',
+                'name' => $user->name,
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
+
         }
-    
+
         elseif ($user->hasRole('Doctor')) {
             return response()->json([
                 'message' => 'Doctor login successful',
                 'redirect' => '/doctor/dashboard',
                 'role' => 'Doctor',
+                'name' => $user->name,
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
         }
@@ -64,8 +68,9 @@ class AuthController extends Controller
         elseif ($user->hasRole('Patient')) {
             return response()->json([
                 'message' => 'Patient login successful',
-                'redirect' => '/home',
+                'redirect' => '/patient/dashboard',
                 'role' => 'Patient',
+                'name' => $user->name,
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
         }
@@ -74,16 +79,16 @@ class AuthController extends Controller
                 'message' => 'User does not have a valid role',
             ], 403);
         }
-    
+
     }
-    
-    
+
+
 
     public function logout(Request $request){
         Auth::user()->tokens->each(function ($token) {
             $token->delete();
         });
-    
+
         return response()->json([
             'message'=> 'Logout Successfully'
         ]);
