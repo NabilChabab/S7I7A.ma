@@ -50,6 +50,7 @@ class AuthController extends Controller
                 'redirect' => '/admin/dashboard',
                 'role' => 'Admin',
                 'name' => $user->name,
+                'userId' => $user->id,
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
 
@@ -61,6 +62,7 @@ class AuthController extends Controller
                 'redirect' => '/doctor/dashboard',
                 'role' => 'Doctor',
                 'name' => $user->name,
+                'userId' => $user->id,
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
         }
@@ -71,6 +73,7 @@ class AuthController extends Controller
                 'redirect' => '/patient/dashboard',
                 'role' => 'Patient',
                 'name' => $user->name,
+                'userId' => $user->id,
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
         }

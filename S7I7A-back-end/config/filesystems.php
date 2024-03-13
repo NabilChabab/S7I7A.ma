@@ -42,11 +42,30 @@ return [
             'url'    => env('APP_URL').'/media',
         ],
 
-        'users_media' => [
+        'admin_media' => [
             'driver' => 'local',
-            'root'   => public_path('media/users'),
-            'url'    => env('APP_URL').'/media/users',
+            'root'   => public_path('media/admin'),
+            'url'    => env('APP_URL').'/media/admin',
         ],
+
+        'doctors_media' => [
+            'driver' => 'local',
+            'root'   => public_path('media/doctors'),
+            'url'    => env('APP_URL').'/media/doctors',
+        ],
+
+        'patients_media' => [
+            'driver' => 'local',
+            'root'   => public_path('media/patients'),
+            'url'    => env('APP_URL').'/media/patients',
+        ],
+
+        'categories_media' => [
+            'driver' => 'local',
+            'root'   => public_path('media/categories'),
+            'url'    => env('APP_URL').'/media/categories',
+        ],
+
 
         'public' => [
             'driver' => 'local',

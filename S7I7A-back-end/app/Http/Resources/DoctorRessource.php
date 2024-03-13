@@ -18,13 +18,15 @@ class DoctorRessource extends JsonResource
             'id' => $this->id,
             'name' => $this->user->name,
             'email' => $this->user->email,
-            'profile' => $this->getFirstMediaUrl('doctors'),
+            'phone' => $this->user->phone,
+            'profile' => $this->getFirstMediaUrl('media/doctors'),
             'role' => $this->user->roles->map(function ($role){
                 return [
                     'id' => $role->id,
                     'name' => $role->name,
                 ];
             }),
+            'cin' => $this->CIN,
             'created_at' => $this->user->created_at,
         ];
 
