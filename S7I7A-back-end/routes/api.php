@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\admin\DoctorsController;
 use App\Http\Controllers\admin\PatientsController;
+use App\Http\Controllers\doctors\ArticlesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,8 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('categories/{id}/restore', [CategoryController::class, 'restore']);
         Route::apiResource('categories', CategoryController::class);
     });
-    Route::middleware('role:Doctor')->get('/doctor/dashboard', function () {
-        echo 'babydoctor';
+    Route::middleware('role:Doctor')->prefix('doctor')->group(function () {
+        Route::apiResource('articles', ArticlesController::class);
     });
 
     Route::middleware('role:Patient')->get('/patient/dashboard', function () {

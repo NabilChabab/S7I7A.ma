@@ -18,12 +18,21 @@ class Article extends Model implements HasMedia
         'createdBy',
         'title',
         'content',
-        'status'
+        'createdBy',
+        'status',
     ];
 
 
 
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+
+    public function doctor(){
+        return $this->belongsTo(Doctors::class , 'createdBy');
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class);
     }
 }

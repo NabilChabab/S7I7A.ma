@@ -66,6 +66,12 @@ return [
             'url'    => env('APP_URL').'/media/categories',
         ],
 
+        'articles_media' => [
+            'driver' => 'local',
+            'root'   => public_path('media/articles'),
+            'url'    => env('APP_URL').'/media/articles',
+        ],
+
 
         'public' => [
             'driver' => 'local',
