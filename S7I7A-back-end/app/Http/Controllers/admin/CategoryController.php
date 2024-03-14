@@ -15,9 +15,11 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+        $deletedCategories = Category::onlyTrashed()->get();
 
         return response()->json([
             'categories' => CategoryResource::collection($categories),
+            'deletedCat' => CategoryResource::collection($deletedCategories)
         ]);
     }
 
@@ -53,7 +55,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         return response()->json([
-            'category' => $category,
+            'category' => new CategoryResource($category),
         ]);
     }
 
@@ -89,5 +91,16 @@ class CategoryController extends Controller
         return response()->json([
          'message' => 'Category deleted successfully!'
         ], 200);
+    }
+
+    public function restore($id)
+    {
+        $patient = Category::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        $patient->restore();
+
+        return response()->json([
+            'message' => 'Patient restored successfully',
+        ]);
     }
 }

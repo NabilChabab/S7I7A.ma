@@ -36,8 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/profile/{id}', [DashboardHomeController::class, 'updateProfile']);
         Route::apiResource('dashboard', DashboardHomeController::class);
         Route::apiResource('doctors', DoctorsController::class);
-        Route::put('patients/{id}/restore', [PatientsController::class , 'restore']);
+        Route::put('patients/{id}/restore', [PatientsController::class, 'restore']);
         Route::apiResource('patients', PatientsController::class);
+        Route::put('categories/{id}/restore', [CategoryController::class, 'restore']);
         Route::apiResource('categories', CategoryController::class);
     });
     Route::middleware('role:Doctor')->get('/doctor/dashboard', function () {
