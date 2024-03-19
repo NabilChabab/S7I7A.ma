@@ -7,6 +7,8 @@ use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,9 +22,13 @@ class ArticlesController extends Controller
         $user = Auth::user()->doctor;
 
         $articles = $user->articles()->get();
+        $categories = Category::all();
+        $tags = Tag::all();
 
         return response()->json([
             'articles' => ArticleResource::collection($articles),
+            'categories' => $categories,
+            'tags' => $tags
         ]);
     }
     /**

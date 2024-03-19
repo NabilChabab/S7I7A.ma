@@ -24,6 +24,7 @@ class ArticleResource extends JsonResource
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'image' => $this->getFirstMediaUrl('media/articles'),
+            'status' => $this->status,
             'tags' => $this->tags->pluck('name'),
         ];
     }

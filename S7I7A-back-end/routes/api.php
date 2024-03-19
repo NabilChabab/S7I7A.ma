@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\ArticlesController as AdminArticlesController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardHomeController;
 use App\Http\Controllers\Auth\AuthController;
@@ -7,6 +8,8 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\admin\DoctorsController;
 use App\Http\Controllers\admin\PatientsController;
 use App\Http\Controllers\doctors\ArticlesController;
+use App\Http\Controllers\doctors\DashboardController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +29,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);
 
+Route::apiResource('index' , HomeController::class);
+
 
 
 
@@ -41,8 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('patients', PatientsController::class);
         Route::put('categories/{id}/restore', [CategoryController::class, 'restore']);
         Route::apiResource('categories', CategoryController::class);
+        Route::apiResource('article', AdminArticlesController::class);
     });
     Route::middleware('role:Doctor')->prefix('doctor')->group(function () {
+        Route::apiResource('home', DashboardController::class);
         Route::apiResource('articles', ArticlesController::class);
     });
 

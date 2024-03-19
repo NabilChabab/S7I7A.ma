@@ -50,7 +50,10 @@ class AuthController extends Controller
                 'redirect' => '/admin/dashboard',
                 'role' => 'Admin',
                 'name' => $user->name,
+                'email' => $user->email,
                 'userId' => $user->id,
+                'phone' => $user->phone,
+                'profile' =>$user->getFirstMediaUrl('media/admin'),
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
 
@@ -62,7 +65,8 @@ class AuthController extends Controller
                 'redirect' => '/doctor/dashboard',
                 'role' => 'Doctor',
                 'name' => $user->name,
-                'userId' => $user->id,
+                'userId' => $user->doctor->id,
+                'profile' =>$user->doctor->getFirstMediaUrl('media/doctors'),
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
         }
