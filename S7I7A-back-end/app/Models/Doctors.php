@@ -47,4 +47,8 @@ class Doctors extends Model implements HasMedia
         return $this->hasMany(Article::class, 'createdBy');
     }
 
+    public function appointments(){
+        return $this->hasMany(Appointment::class);
+    }
+
 }

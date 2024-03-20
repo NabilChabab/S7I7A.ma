@@ -27,6 +27,10 @@ class DoctorRessource extends JsonResource
                 ];
             }),
             'cin' => $this->CIN,
+            'experience' => $this->experience,
+            'qualification' => $this->qualification,
+            'description' => $this->description,
+            'address' => $this->address,
             'created_at' => $this->user->created_at,
         ];
 

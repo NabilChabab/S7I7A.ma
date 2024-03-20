@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\admin\DoctorsController;
 use App\Http\Controllers\admin\PatientsController;
+use App\Http\Controllers\appointment\AppointmentController;
 use App\Http\Controllers\doctors\ArticlesController;
 use App\Http\Controllers\doctors\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -29,7 +30,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);
 
-Route::apiResource('index' , HomeController::class);
+Route::get('/doctor-details/{id}', [HomeController::class, 'showDoctor']);
+Route::apiResource('index', HomeController::class);
 
 
 
@@ -53,7 +55,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('articles', ArticlesController::class);
     });
 
-    Route::middleware('role:Patient')->get('/patient/dashboard', function () {
-        echo 'babydoctor';
+    Route::middleware('role:Patient')->prefix('patient')->group(function () {
+
+        Route::apiResource('appointment', AppointmentController::class);
     });
 });
