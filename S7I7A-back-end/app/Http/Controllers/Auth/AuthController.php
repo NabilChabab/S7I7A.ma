@@ -74,7 +74,7 @@ class AuthController extends Controller
         elseif ($user->hasRole('Patient')) {
             return response()->json([
                 'message' => 'Patient login successful',
-                'redirect' => '/patient/dashboard',
+                'redirect' => '/',
                 'role' => 'Patient',
                 'name' => $user->name,
                 'userId' => $user->id,

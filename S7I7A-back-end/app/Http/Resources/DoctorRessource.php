@@ -36,4 +36,6 @@ class DoctorRessource extends JsonResource
 
         return $data;
     }
+
+    
 }

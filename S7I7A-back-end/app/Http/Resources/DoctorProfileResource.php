@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Appointment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,5 +31,8 @@ class DoctorProfileResource extends JsonResource
         ];
 
         return $data;
+
     }
+
+
 }

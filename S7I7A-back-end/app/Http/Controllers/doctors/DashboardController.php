@@ -31,6 +31,9 @@ class DashboardController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'description' => 'nullable|max:255'
+        ]);
         $doctor = Doctors::findOrFail($id);
 
         $doctor->update($request->all());
@@ -53,7 +56,6 @@ class DashboardController extends Controller
 
     public function show(string $id)
     {
-        $user = Auth::id();
         $doctor = Doctors::with('user')->findOrFail($id);
 
         return response()->json(['doctor' => new DoctorProfileResource($doctor)]);

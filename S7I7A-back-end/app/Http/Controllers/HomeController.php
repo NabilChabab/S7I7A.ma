@@ -18,7 +18,7 @@ class HomeController extends Controller
     public function index()
     {
         $doctors = Doctors::latest()->take(4)->get();
-        $categories = Category::latest()->take(3)->get();
+        $categories = Category::latest()->take(8)->get();
         $articles = Article::where('status' , 'accepted')->latest()->take(3)->get();
 
         return response()->json([
