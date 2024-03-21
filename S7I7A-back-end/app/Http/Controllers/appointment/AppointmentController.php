@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\appointment;
 
 use App\Http\Controllers\Controller;
+use App\Mail\LocalAppointmentConfirmation;
+use App\Mail\OnlineAppointmentConfirmation;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\Doctors;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AppointmentController extends Controller
 {
@@ -57,6 +61,16 @@ class AppointmentController extends Controller
 
 
         $appointment = Appointment::create($validated);
+            $doctor = Doctors::findOrFail($doctorId);
+            $patient = User::findOrFail($patientId);
+        if ($validated['type'] === 'local') {
+            $pdf = PDF::loadView('pdf.ticket', compact(['appointment']))->output();
+            Mail::to($patient->email)->send(new LocalAppointmentConfirmation($pdf));
+        }
+        else{
+            Mail::to($patient->email)->send(new OnlineAppointmentConfirmation($appointment));
+        }
+
 
         return response()->json($appointment, 201);
     }

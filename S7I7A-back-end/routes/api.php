@@ -55,8 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('articles', ArticlesController::class);
     });
 
-    Route::middleware('role:Patient')->prefix('patient')->group(function () {
-
+    Route::prefix('patient')->group(function () {
         Route::apiResource('appointment', AppointmentController::class);
     });
 });
