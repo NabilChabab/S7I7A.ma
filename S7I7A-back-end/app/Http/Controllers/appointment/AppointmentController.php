@@ -44,36 +44,42 @@ class AppointmentController extends Controller
             'type' => 'required|in:online,local',
         ]);
 
-        // Combine date and hour into a single Carbon instance
         $appointmentDateTime = Carbon::parse($validated['appointment_date'] . ' ' . $validated['appointment_hour']);
 
+        $existingAppointment = Appointment::where('user_id', Auth::id())
+            ->where('appointment_date', $appointmentDateTime->format('Y-m-d'))
+            ->where('appointment_hour', $appointmentDateTime->format('H:i'))
+            ->first();
+
+        if ($existingAppointment) {
+            return response()->json(['error' => 'You already have an appointment at this time.'], 400);
+        }
+
         $doctorId = $validated['doctor_id'];
-        $patientId = Auth::id();
-        $validated['user_id'] = $patientId;
         $isAvailable = Appointment::where('doctor_id', $doctorId)
             ->where('appointment_date', $appointmentDateTime->format('Y-m-d'))
             ->where('appointment_hour', $appointmentDateTime->format('H:i'))
             ->doesntExist();
 
         if (!$isAvailable) {
-            return response()->json(['error' => 'Doctor is not available at the selected time.'], 400);
+            return response()->json(['error' => 'Doctor is not available at this time choose another time.'], 400);
         }
 
-
+        $validated['user_id'] = Auth::id();
         $appointment = Appointment::create($validated);
-            $doctor = Doctors::findOrFail($doctorId);
-            $patient = User::findOrFail($patientId);
+
+        $doctor = Doctors::findOrFail($doctorId);
+        $patient = User::findOrFail(Auth::id());
         if ($validated['type'] === 'local') {
-            $pdf = PDF::loadView('pdf.ticket', compact(['appointment']))->output();
+            $pdf = PDF::loadView('pdf.ticket', compact('appointment'))->output();
             Mail::to($patient->email)->send(new LocalAppointmentConfirmation($pdf));
-        }
-        else{
+        } else {
             Mail::to($patient->email)->send(new OnlineAppointmentConfirmation($appointment));
         }
 
-
         return response()->json($appointment, 201);
     }
+
 
 
     /**

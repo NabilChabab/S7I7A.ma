@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\admin\DoctorsController;
 use App\Http\Controllers\admin\PatientsController;
 use App\Http\Controllers\appointment\AppointmentController;
+use App\Http\Controllers\doctors\AppointmentController as DoctorsAppointmentController;
 use App\Http\Controllers\doctors\ArticlesController;
 use App\Http\Controllers\doctors\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -53,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:Doctor')->prefix('doctor')->group(function () {
         Route::apiResource('home', DashboardController::class);
         Route::apiResource('articles', ArticlesController::class);
+        Route::apiResource('appointments', DoctorsAppointmentController::class);
     });
 
     Route::prefix('patient')->group(function () {
