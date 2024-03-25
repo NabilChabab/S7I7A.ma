@@ -31,11 +31,12 @@ class DoctorRessource extends JsonResource
             'qualification' => $this->qualification,
             'description' => $this->description,
             'address' => $this->address,
+            'category' => $this->category->name,
             'created_at' => $this->user->created_at,
         ];
 
         return $data;
     }
 
-    
+
 }

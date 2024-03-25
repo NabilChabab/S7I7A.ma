@@ -28,6 +28,7 @@ class StoreDoctorRequest extends FormRequest
             'password' => 'required|string|min:6',
             'CIN' => 'required|string|unique:doctors',
             'profile' => 'required|image',
+            'category_id' => 'required'
         ];
     }
 }

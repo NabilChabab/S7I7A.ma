@@ -23,4 +23,7 @@ class Category extends Model implements HasMedia
     public function articles(){
         return $this->hasMany(Article::class);
     }
+    public function doctors(){
+        return $this->belongsToMany(Doctors::class);
+    }
 }

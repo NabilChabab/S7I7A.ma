@@ -31,7 +31,8 @@ class Doctors extends Model implements HasMedia
         'qualification',
         'description',
         'CIN',
-        'user_id'
+        'user_id',
+        'category_id'
     ];
 
     /**
@@ -49,6 +50,10 @@ class Doctors extends Model implements HasMedia
 
     public function appointments(){
         return $this->hasMany(Appointment::class);
+    }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 
 }

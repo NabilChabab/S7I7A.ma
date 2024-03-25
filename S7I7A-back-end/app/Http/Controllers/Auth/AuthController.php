@@ -24,7 +24,7 @@ class AuthController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        $user->roles()->attach(Role::where('name', 'patient')->first()->id);
+        $user->roles()->attach(Role::where('name', 'Patient')->first()->id);
 
         Auth::login($user);
 
@@ -78,6 +78,7 @@ class AuthController extends Controller
                 'role' => 'Patient',
                 'name' => $user->name,
                 'userId' => $user->id,
+                'profile' =>$user->getFirstMediaUrl('media/patients'),
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);
         }

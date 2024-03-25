@@ -1,6 +1,8 @@
 <?php
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Auth\AuthController;
+use Illuminate\Broadcasting\Event;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    // broadcast(new MessageSent('message'));
     return view('welcome');
 });
 

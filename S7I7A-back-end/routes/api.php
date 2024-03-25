@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MessageSent;
 use App\Http\Controllers\admin\ArticlesController as AdminArticlesController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardHomeController;
@@ -7,7 +8,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\admin\DoctorsController;
 use App\Http\Controllers\admin\PatientsController;
-use App\Http\Controllers\appointment\AppointmentController;
+use App\Http\Controllers\chat\MessageController;
+use App\Http\Controllers\patient\AppointmentController;
 use App\Http\Controllers\doctors\AppointmentController as DoctorsAppointmentController;
 use App\Http\Controllers\doctors\ArticlesController;
 use App\Http\Controllers\doctors\DashboardController;
@@ -25,6 +27,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -33,6 +37,8 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);
 
 Route::get('/doctor-details/{id}', [HomeController::class, 'showDoctor']);
 Route::apiResource('index', HomeController::class);
+Route::post('/messages', [MessageController::class, 'sendMessage']);
+
 
 
 
@@ -58,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('patient')->group(function () {
+        Route::patch('/profile/{id}', [HomeController::class, 'updateProfile']);
         Route::apiResource('appointment', AppointmentController::class);
     });
 });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorRessource;
+use App\Models\Category;
 use App\Models\Doctors;
 use App\Models\Role;
 use App\Models\User;
@@ -23,8 +24,10 @@ class DoctorsController extends Controller
     public function index()
     {
         $doctors = Doctors::all();
+        $categories = Category::all();
         return response()->json([
             'doctors' => DoctorRessource::collection($doctors),
+            'categories' => $categories
         ]);
     }
 
@@ -49,6 +52,7 @@ class DoctorsController extends Controller
                 'qualification' => $request->qualification,
                 'description' => $request->description,
                 'CIN' => $request->CIN,
+                'category_id' => $request->category_id,
             ]);
 
             $doctor->addMediaFromRequest('profile')->toMediaCollection('media/doctors', 'doctors_media');

@@ -18,10 +18,11 @@ class ArticlesController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $user = Auth::user()->doctor;
+{
+    $user = Auth::user();
 
-        $articles = $user->articles()->get();
+    if ($user->doctor) {
+        $articles = $user->doctor->articles()->get();
         $categories = Category::all();
         $tags = Tag::all();
 
@@ -30,14 +31,13 @@ class ArticlesController extends Controller
             'categories' => $categories,
             'tags' => $tags
         ]);
+    } else {
+        return response()->json([
+            'message' => 'User is not a doctor.'
+        ], 403);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -74,14 +74,6 @@ class ArticlesController extends Controller
         return response()->json([
             'article' => new ArticleResource($article),
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**

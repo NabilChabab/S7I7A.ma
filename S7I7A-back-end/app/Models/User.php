@@ -56,4 +56,8 @@ class User extends Authenticatable implements HasMedia
     public function appointments(){
         return $this->hasMany(Appointment::class);
     }
+
+    public function messages(){
+        return $this->hasMany(Message::class);
+    }
 }

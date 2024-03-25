@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\appointment;
+namespace App\Http\Controllers\patient;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AppointmentResource;
 use App\Mail\LocalAppointmentConfirmation;
 use App\Mail\OnlineAppointmentConfirmation;
 use Illuminate\Http\Request;
@@ -21,7 +22,20 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::id();
+
+        $onlineAppointments = Appointment::where('user_id', $user)
+            ->where('type', 'online')
+            ->get();
+
+        $localAppointments = Appointment::where('user_id', $user)
+            ->where('type', 'local')
+            ->get();
+
+        return response()->json([
+            'online_appointments' => AppointmentResource::collection($onlineAppointments),
+            'local_appointments' => AppointmentResource::collection($localAppointments),
+        ]);
     }
 
     /**
