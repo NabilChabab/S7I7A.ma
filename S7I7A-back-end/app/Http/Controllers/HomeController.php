@@ -10,7 +10,7 @@ use App\Http\Resources\PatientRessource;
 use App\Http\Resources\UserRessource;
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\Doctors;
+use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $doctors = Doctors::latest()->take(4)->get();
+        $doctors = Doctor::latest()->take(4)->get();
         $categories = Category::latest()->take(8)->get();
         $articles = Article::where('status' , 'accepted')->latest()->take(3)->get();
 
@@ -56,7 +56,7 @@ class HomeController extends Controller
      */
     public function showDoctor(string $id)
     {
-        $doctor = Doctors::findOrFail($id);
+        $doctor = Doctor::findOrFail($id);
         return response()->json([
             'doctor' => new DoctorRessource($doctor),
         ]);

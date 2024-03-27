@@ -37,7 +37,7 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);
 
 Route::get('/doctor-details/{id}', [HomeController::class, 'showDoctor']);
 Route::apiResource('index', HomeController::class);
-Route::post('/messages', [MessageController::class, 'sendMessage']);
+
 
 
 
@@ -66,5 +66,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('patient')->group(function () {
         Route::patch('/profile/{id}', [HomeController::class, 'updateProfile']);
         Route::apiResource('appointment', AppointmentController::class);
+        Route::apiResource('doctors', DoctorsController::class);
     });
+
+    //Chat
+    Route::post('/messages', [MessageController::class, 'sendMessage']);
+    Route::get('/messages/{userId}', [MessageController::class, 'fetchMessages']);
+    Route::get('users', [MessageController::class , 'getPatients']);
+    Route::get('doctors', [MessageController::class , 'getDoctors']);
+
 });

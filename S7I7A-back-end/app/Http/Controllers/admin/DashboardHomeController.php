@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\DoctorRessource;
 use App\Http\Resources\UserRessource;
-use App\Models\Doctors;
+use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class DashboardHomeController extends Controller
      */
     public function index()
     {
-        $users = Doctors::latest()->take(4)->get();
+        $users = Doctor::latest()->take(4)->get();
 
         return response()->json([
             'message' => 'success',

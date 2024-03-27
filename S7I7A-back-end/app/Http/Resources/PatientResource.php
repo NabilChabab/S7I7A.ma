@@ -10,19 +10,25 @@ class PatientResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @return array<string, mixed>
+     * @param  Request  $request
+     * @return array
      */
-    public function toArray(Request $request): array
+    public function toArray($request)
     {
-        $data = [
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
             'profile' => $this->getFirstMediaUrl('media/patients'),
             'created_at' => $this->created_at,
+            'appointments' => $this->appointments->map(function ($appointment) {
+                return [
+                    'appointment_date' => $appointment->appointment_date,
+                    'appointment_hour' => $appointment->appointment_hour,
+                ];
+            }),
         ];
-
-        return $data;
     }
 }
+

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\DoctorProfileResource;
 use App\Http\Resources\PatientRessource;
 use App\Http\Resources\UserRessource;
-use App\Models\Doctors;
+use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +34,7 @@ class DashboardController extends Controller
         $request->validate([
             'description' => 'nullable|max:255'
         ]);
-        $doctor = Doctors::findOrFail($id);
+        $doctor = Doctor::findOrFail($id);
 
         $doctor->update($request->all());
 
@@ -56,7 +56,7 @@ class DashboardController extends Controller
 
     public function show(string $id)
     {
-        $doctor = Doctors::with('user')->findOrFail($id);
+        $doctor = Doctor::with('user')->findOrFail($id);
 
         return response()->json(['doctor' => new DoctorProfileResource($doctor)]);
     }

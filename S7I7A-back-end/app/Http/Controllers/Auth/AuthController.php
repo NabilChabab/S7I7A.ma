@@ -66,6 +66,7 @@ class AuthController extends Controller
                 'role' => 'Doctor',
                 'name' => $user->name,
                 'userId' => $user->doctor->id,
+                'doc' => $user->id,
                 'profile' =>$user->doctor->getFirstMediaUrl('media/doctors'),
                 'token' => $user->createToken('login')->plainTextToken
             ], 200);

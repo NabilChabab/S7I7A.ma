@@ -50,7 +50,7 @@ class User extends Authenticatable implements HasMedia
 
     public function doctor()
     {
-        return $this->hasOne(Doctors::class);
+        return $this->hasOne(Doctor::class);
     }
 
     public function appointments(){

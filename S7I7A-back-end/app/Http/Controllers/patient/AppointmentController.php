@@ -8,7 +8,7 @@ use App\Mail\LocalAppointmentConfirmation;
 use App\Mail\OnlineAppointmentConfirmation;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
-use App\Models\Doctors;
+use App\Models\Doctor;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -82,7 +82,7 @@ class AppointmentController extends Controller
         $validated['user_id'] = Auth::id();
         $appointment = Appointment::create($validated);
 
-        $doctor = Doctors::findOrFail($doctorId);
+        $doctor = Doctor::findOrFail($doctorId);
         $patient = User::findOrFail(Auth::id());
         if ($validated['type'] === 'local') {
             $pdf = PDF::loadView('pdf.ticket', compact('appointment'))->output();

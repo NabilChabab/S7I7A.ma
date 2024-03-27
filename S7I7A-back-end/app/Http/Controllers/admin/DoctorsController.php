@@ -7,7 +7,7 @@ use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorRessource;
 use App\Models\Category;
-use App\Models\Doctors;
+use App\Models\Doctor;
 use App\Models\Role;
 use App\Models\User;
 use Exception;
@@ -23,7 +23,7 @@ class DoctorsController extends Controller
      */
     public function index()
     {
-        $doctors = Doctors::all();
+        $doctors = Doctor::all();
         $categories = Category::all();
         return response()->json([
             'doctors' => DoctorRessource::collection($doctors),
@@ -45,7 +45,7 @@ class DoctorsController extends Controller
             ]);
 
             Log::debug('Created user:', $user->toArray());
-            $doctor = Doctors::create([
+            $doctor = Doctor::create([
                 'user_id' => $user->id,
                 'address' => $request->address,
                 'experience' => $request->experience,
@@ -70,7 +70,7 @@ class DoctorsController extends Controller
     }
     public function show(string $id)
     {
-        $doctor = Doctors::with('user')->findOrFail($id);
+        $doctor = Doctor::with('user')->findOrFail($id);
             return response()->json([
                 'doctor' =>new DoctorRessource($doctor)
             ]);
@@ -78,7 +78,7 @@ class DoctorsController extends Controller
     }
     public function update(UpdateDoctorRequest $request, string $id)
 {
-    $doctor = Doctors::findOrFail($id);
+    $doctor = Doctor::findOrFail($id);
 
     $doctor->update($request->all());
 
@@ -103,7 +103,7 @@ class DoctorsController extends Controller
     public function destroy(string $id)
 {
     try {
-        $doctors = Doctors::findOrFail($id);
+        $doctors = Doctor::findOrFail($id);
 
         $user = User::where('id', $doctors->user_id)->first();
 

@@ -29,7 +29,7 @@ class Article extends Model implements HasMedia
     }
 
     public function doctor(){
-        return $this->belongsTo(Doctors::class , 'createdBy');
+        return $this->belongsTo(Doctor::class , 'createdBy');
     }
 
     public function tags(){

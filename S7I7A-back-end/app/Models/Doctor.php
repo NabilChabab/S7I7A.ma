@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Doctors extends Model implements HasMedia
+class Doctor extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes , InteractsWithMedia;
 

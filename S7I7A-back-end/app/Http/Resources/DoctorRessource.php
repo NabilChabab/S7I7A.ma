@@ -16,6 +16,7 @@ class DoctorRessource extends JsonResource
     {
         $data = [
             'id' => $this->id,
+            'user_id' => $this->user->id,
             'name' => $this->user->name,
             'email' => $this->user->email,
             'phone' => $this->user->phone,
@@ -33,6 +34,12 @@ class DoctorRessource extends JsonResource
             'address' => $this->address,
             'category' => $this->category->name,
             'created_at' => $this->user->created_at,
+            'appointments' => $this->appointments->map(function ($appointment) {
+                return [
+                    'appointment_date' => $appointment->appointment_date,
+                    'appointment_hour' => $appointment->appointment_hour,
+                ];
+            }),
         ];
 
         return $data;
