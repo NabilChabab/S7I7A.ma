@@ -27,6 +27,7 @@ class DoctorProfileResource extends JsonResource
             'description' => $this->description,
             'address' => $this->address,
             'cin' => $this->CIN,
+            'price' => $this->price,
             'created_at' => $this->user->created_at,
         ];
 

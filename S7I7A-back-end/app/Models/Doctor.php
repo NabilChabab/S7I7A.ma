@@ -31,6 +31,7 @@ class Doctor extends Model implements HasMedia
         'qualification',
         'description',
         'CIN',
+        'price',
         'user_id',
         'category_id'
     ];

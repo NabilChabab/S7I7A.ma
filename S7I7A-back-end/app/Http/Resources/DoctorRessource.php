@@ -21,6 +21,7 @@ class DoctorRessource extends JsonResource
             'email' => $this->user->email,
             'phone' => $this->user->phone,
             'profile' => $this->getFirstMediaUrl('media/doctors'),
+            'price' => $this->price,
             'role' => $this->user->roles->map(function ($role){
                 return [
                     'id' => $role->id,

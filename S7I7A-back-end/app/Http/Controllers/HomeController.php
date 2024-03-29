@@ -23,11 +23,13 @@ class HomeController extends Controller
     public function index()
     {
         $doctors = Doctor::latest()->take(4)->get();
+        $all_doctors = Doctor::all();
         $categories = Category::latest()->take(8)->get();
         $articles = Article::where('status' , 'accepted')->latest()->take(3)->get();
 
         return response()->json([
             'doctors' => DoctorRessource::collection($doctors),
+            'all_doctors' => DoctorRessource::collection($all_doctors),
             'categories' => CategoryResource::collection($categories),
             'articles' => ArticleResource::collection($articles)
         ]);

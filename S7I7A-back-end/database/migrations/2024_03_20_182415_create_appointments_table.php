@@ -19,6 +19,7 @@ return new class extends Migration
             $table->time('appointment_hour');
             $table->enum('status', ['pending', 'inProgress', 'completed'])->default('pending');
             $table->enum('type', ['online', 'local'])->nullable();
+            $table->float('price')->nullable();
             $table->timestamps();
         });
     }

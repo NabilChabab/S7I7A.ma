@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('qualification')->nullable();
             $table->string('description')->nullable();
             $table->string('CIN');
+            $table->float('price')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

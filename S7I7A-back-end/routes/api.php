@@ -67,12 +67,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/profile/{id}', [HomeController::class, 'updateProfile']);
         Route::apiResource('appointment', AppointmentController::class);
         Route::apiResource('doctors', DoctorsController::class);
+        Route::post('session', [AppointmentController::class ,'session'])->name('session');
+        Route::get('success', [AppointmentController::class , 'success'])->name('success');
     });
 
     //Chat
     Route::post('/messages', [MessageController::class, 'sendMessage']);
     Route::get('/messages/{userId}', [MessageController::class, 'fetchMessages']);
-    Route::get('users', [MessageController::class , 'getPatients']);
-    Route::get('doctors', [MessageController::class , 'getDoctors']);
-
+    Route::get('users', [MessageController::class, 'getPatients']);
+    Route::get('doctors', [MessageController::class, 'getDoctors']);
 });
