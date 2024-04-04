@@ -22,6 +22,11 @@ class PatientResource extends JsonResource
             'phone' => $this->phone,
             'profile' => $this->getFirstMediaUrl('media/patients'),
             'created_at' => $this->created_at,
+            'appointment_status' => $this->appointments->map(function ($appointment) {
+                return [
+                    'status' => $appointment->status,
+                ];
+            }),
             'appointments' => $this->appointments->map(function ($appointment) {
                 return [
                     'appointment_date' => $appointment->appointment_date,

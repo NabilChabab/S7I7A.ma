@@ -51,11 +51,6 @@ class DashboardHomeController extends Controller
     public function show()
     {
         $user = Auth::user();
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
         return response()->json(['user' => new UserRessource($user)]);
     }
 }

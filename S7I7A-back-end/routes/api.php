@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\MessageSent;
+use App\Http\Controllers\admin\AppointmentController as AdminAppointmentController;
 use App\Http\Controllers\admin\ArticlesController as AdminArticlesController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardHomeController;
@@ -36,6 +37,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);
 
 Route::get('/doctor-details/{id}', [HomeController::class, 'showDoctor']);
+Route::get('/doctor-byCategory/{id}', [HomeController::class, 'showDoctorByCategory']);
 Route::apiResource('index', HomeController::class);
 
 
@@ -46,7 +48,7 @@ Route::apiResource('index', HomeController::class);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Protect the admin dashboard route
+    // Protect the admin  routes
     Route::middleware('role:Admin')->prefix('admin')->group(function () {
         Route::patch('/profile/{id}', [DashboardHomeController::class, 'updateProfile']);
         Route::apiResource('dashboard', DashboardHomeController::class);
@@ -56,17 +58,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('categories/{id}/restore', [CategoryController::class, 'restore']);
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('article', AdminArticlesController::class);
+        Route::apiResource('appointment', AdminAppointmentController::class);
+
     });
+    // Protect the doctor  routes
     Route::middleware('role:Doctor')->prefix('doctor')->group(function () {
         Route::apiResource('home', DashboardController::class);
         Route::apiResource('articles', ArticlesController::class);
         Route::apiResource('appointments', DoctorsAppointmentController::class);
     });
 
+    // Protect the patient  routes
     Route::prefix('patient')->group(function () {
         Route::patch('/profile/{id}', [HomeController::class, 'updateProfile']);
         Route::apiResource('appointment', AppointmentController::class);
-        Route::apiResource('doctors', DoctorsController::class);
         Route::post('session', [AppointmentController::class ,'session'])->name('session');
         Route::get('success', [AppointmentController::class , 'success'])->name('success');
     });

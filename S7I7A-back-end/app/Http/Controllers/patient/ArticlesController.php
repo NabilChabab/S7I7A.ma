@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\patient;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DoctorRessource;
-use App\Models\Doctor;
+use App\Http\Resources\ArticleResource;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
-class DoctorsController extends Controller
+class ArticlesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $doctors = Doctor::all();
+        $articles = Article::all();
         return response()->json([
-            'doctors' => DoctorRessource::collection($doctors)
+            'articles' => ArticleResource::collection($articles)
         ]);
     }
+
 
 }

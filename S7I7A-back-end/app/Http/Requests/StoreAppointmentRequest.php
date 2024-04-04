@@ -26,6 +26,7 @@ class StoreAppointmentRequest extends FormRequest
             'appointment_date' => 'required|date',
             'appointment_hour' => 'required|date_format:H:i',
             'type' => 'required|in:online,local',
+            'price' => 'required',
         ];
     }
 }

@@ -23,15 +23,17 @@ class HomeController extends Controller
     public function index()
     {
         $doctors = Doctor::latest()->take(4)->get();
-        $all_doctors = Doctor::all();
         $categories = Category::latest()->take(8)->get();
         $articles = Article::where('status' , 'accepted')->latest()->take(3)->get();
+        $all_doctors = Doctor::all();
+        $all_articles = Article::where('status' , 'accepted')->get();
 
         return response()->json([
             'doctors' => DoctorRessource::collection($doctors),
-            'all_doctors' => DoctorRessource::collection($all_doctors),
             'categories' => CategoryResource::collection($categories),
-            'articles' => ArticleResource::collection($articles)
+            'articles' => ArticleResource::collection($articles),
+            'all_doctors' => DoctorRessource::collection($all_doctors),
+            'all_articles' => ArticleResource::collection($all_articles),
         ]);
     }
 
@@ -68,11 +70,19 @@ class HomeController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if (!$user) {
-            return response()->json(['error' => 'Patient not found'], 404);
-        }
-
         return response()->json(['patient' => new PatientRessource($user)]);
+    }
+
+
+    public function showDoctorByCategory($id){
+        $category = Category::findOrFail($id);
+
+        $doctors = Doctor::where('category_id', $category->id)->get();
+
+        return response()->json([
+            'doctorByCategory' => DoctorRessource::collection($doctors),
+        ]);
+
     }
 
 
