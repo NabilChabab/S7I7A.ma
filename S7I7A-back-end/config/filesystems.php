@@ -71,6 +71,11 @@ return [
             'root'   => public_path('media/articles'),
             'url'    => env('APP_URL').'/media/articles',
         ],
+        'prescription_media' => [
+            'driver' => 'local',
+            'root'   => public_path('media/prescription'),
+            'url'    => env('APP_URL').'/media/prescription',
+        ],
 
 
         'public' => [

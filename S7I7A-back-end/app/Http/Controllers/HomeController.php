@@ -23,7 +23,8 @@ class HomeController extends Controller
     public function index()
     {
         $doctors = Doctor::latest()->take(4)->get();
-        $categories = Category::latest()->take(8)->get();
+        $categories = Category::all();
+        $all_categories = Category::all();
         $articles = Article::where('status' , 'accepted')->latest()->take(3)->get();
         $all_doctors = Doctor::all();
         $all_articles = Article::where('status' , 'accepted')->get();
@@ -34,7 +35,12 @@ class HomeController extends Controller
             'articles' => ArticleResource::collection($articles),
             'all_doctors' => DoctorRessource::collection($all_doctors),
             'all_articles' => ArticleResource::collection($all_articles),
+            'all_categories' => CategoryResource::collection($all_categories),
         ]);
+    }
+
+    public function counts(){
+
     }
 
     public function updateProfile(UpdateUserRequest $request, $id)

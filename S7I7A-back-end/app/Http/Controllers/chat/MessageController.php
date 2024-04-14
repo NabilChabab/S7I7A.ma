@@ -17,20 +17,29 @@ class MessageController extends Controller
     public function sendMessage(Request $request)
     {
         $request->validate([
-            'message' => 'required|string',
             'receiver_id' => 'required',
             'sender_id' => 'required',
+            'prescription' => 'nullable|file|mimes:pdf'
         ]);
 
-        $message = Message::create([
+        $messageData = [
             'sender_id' => $request->sender_id,
             'receiver_id' => $request->receiver_id,
-            'message' => $request->input('message'),
-        ]);
+        ];
 
-        broadcast(new MessageSent($message))->toOthers();
+        if ($request->hasFile('prescription')) {
+            $message = Message::create($messageData);
+            $message->addMediaFromRequest('prescription')->toMediaCollection('media/prescription', 'prescription_media');
+        } else {
+            if ($request->has('message')) {
+                $messageData['message'] = $request->input('message');
+                $message = Message::create($messageData);
 
-        return response()->json(['message' => 'Message sent successfully'], 200);
+                return response()->json(['message' => 'Message sent successfully']);
+            } else {
+                return response()->json(['error' => 'No message or file provided'], 400);
+            }
+        }
     }
 
 
@@ -66,14 +75,14 @@ class MessageController extends Controller
     }
 
     public function getDoctors(Request $request)
-{
-    $authPatientId = $request->user()->id;
-    $doctors = Doctor::whereHas('appointments', function ($query) use ($authPatientId) {
-        $query->where('user_id', $authPatientId)->where('type' , 'online');
-    })->with(['appointments' => function ($query) use ($authPatientId) {
-        $query->where('user_id', $authPatientId)->where('type' , 'online');
-    }])->get();
+    {
+        $authPatientId = $request->user()->id;
+        $doctors = Doctor::whereHas('appointments', function ($query) use ($authPatientId) {
+            $query->where('user_id', $authPatientId)->where('type', 'online');
+        })->with(['appointments' => function ($query) use ($authPatientId) {
+            $query->where('user_id', $authPatientId)->where('type', 'online');
+        }])->get();
 
-    return response()->json(['doctors' => DoctorRessource::collection($doctors)], 200);
-}
+        return response()->json(['doctors' => DoctorRessource::collection($doctors)], 200);
+    }
 }

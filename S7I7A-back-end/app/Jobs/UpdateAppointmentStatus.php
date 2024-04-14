@@ -37,6 +37,7 @@ class UpdateAppointmentStatus implements ShouldQueue
             })
             ->get();
 
+
         foreach ($completedAppointments as $appointment) {
             $appointment->update(['status' => 'completed']);
         }

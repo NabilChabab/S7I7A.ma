@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Repositories\CategoryRepository\CategoryRepository;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,11 +13,20 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    protected CategoryRepository $categoryRepository;
+
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
+
     public function index()
     {
-        $categories = Category::all();
-        $deletedCategories = Category::onlyTrashed()->get();
-
+        $categories = $this->categoryRepository->findAll();
+        $deletedCategories = $this->categoryRepository->findTrached();
         return response()->json([
             'categories' => CategoryResource::collection($categories),
             'deletedCat' => CategoryResource::collection($deletedCategories)
@@ -40,8 +50,8 @@ class CategoryController extends Controller
             'name' => 'required',
             'icon' => 'required|image'
         ]);
-        $category = Category::create($request->all());
-        $category->addMediaFromRequest('icon')->toMediaCollection('media/categories' , 'categories_media');
+        $category = $this->categoryRepository->create($request->all());
+        $category->addMediaFromRequest('icon')->toMediaCollection('media/categories', 'categories_media');
         return response()->json([
             'category' => $category,
             'message' => 'Category Created Successfully'
@@ -53,7 +63,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->categoryRepository->findById($id);
         return response()->json([
             'category' => new CategoryResource($category),
         ]);
@@ -69,9 +79,9 @@ class CategoryController extends Controller
             'icon' => 'nullable',
         ]);
 
-        $category = Category::findOrFail($id);
+        $category = $this->categoryRepository->findById($id);
         $category->update($request->all());
-        if($request->hasFile('icon')){
+        if ($request->hasFile('icon')) {
             $category->clearMediaCollection('media/categories');
             $category->addMediaFromRequest('icon')->toMediaCollection('media/categories', 'categories_media');
         }
@@ -86,10 +96,10 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->categoryRepository->findById($id);
         $category->delete();
         return response()->json([
-         'message' => 'Category deleted successfully!'
+            'message' => 'Category deleted successfully!'
         ], 200);
     }
 
