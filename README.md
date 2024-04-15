@@ -5,4 +5,6 @@ https://drive.google.com/file/d/1q9WxGMSKXBXqon8WuBVyfSda5lq9vxI3/view?usp=drive
 # Figma UI/UX Design
 https://www.figma.com/file/YCqgyynPImzyuRqt4eezHa/Untitled?type=design&node-id=0%3A1&mode=design&t=X15zEoiiXs4qyUIm-1
 # Planification Jira
-https://sqluml.atlassian.net/jira/core/projects/SM/board?atlOrigin=eyJpIjoiZmMyYTdhNmFjYTU4NDMwYTgyMTEyNTM3ZGQ4NWMwMDQiLCJwIjoiaiJ9
+https://sqluml.atlassian.net/jira/core/projects/SM/board?atlOrigin=eyJpIjoiZmMyYTdhNmFjYTU4NDMwYTgyMTEyNTM3ZGQ4NWMwMDQiLCJwIjoiaiJ9 
+# Presentation Canva
+https://www.canva.com/design/DAFjxK3_igo/9hPGbnndq_xysUm8FfMVew/edit?utm_content=DAFjxK3_igo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton

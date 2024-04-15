@@ -145,7 +145,7 @@ img.g-img + div {
 }
 .btn.btn-primary{
 	border-radius: 5px;
-	background: #30e3ca;
+	background: #5146e6;
 	color: #ffffff;
 }
 .btn.btn-white{
@@ -183,7 +183,7 @@ body{
 }
 
 a{
-	color: #30e3ca;
+	color: #5146e6;
 }
 
 table{
@@ -194,7 +194,7 @@ table{
 	margin: 0;
 }
 .logo h1 a{
-	color: #30e3ca;
+	color: #5146e6;
 	font-size: 24px;
 	font-weight: 700;
 	font-family: 'Lato', sans-serif;
@@ -222,7 +222,7 @@ table{
 }
 .hero .text h2 span{
 	font-weight: 600;
-	color: #30e3ca;
+	color: #5146e6;
 }
 
 
@@ -253,7 +253,7 @@ table{
 	content: '';
 	width: 100%;
 	height: 2px;
-	background: #30e3ca;
+	background: #5146e6;
 	margin: 0 auto;
 }
 
@@ -333,7 +333,7 @@ ul.social li{
           	<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
           		<tr>
           			<td class="logo" style="text-align: center;">
-			            <h1><a href="#">e-Verify</a></h1>
+			            <h1><a href="#">S7I7A.ma</a></h1>
 			          </td>
           		</tr>
           	</table>

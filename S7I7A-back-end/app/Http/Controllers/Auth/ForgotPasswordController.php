@@ -13,31 +13,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordController extends Controller
 {
-//     public function sendResetLinkEmail(Request $request)
-// {
-//     $request->validate(['email' => 'required|email']);
 
-//     $user = User::where('email', $request->email)->first();
-
-//     if (!$user) {
-//         return response()->json(['error' => 'User not found'], 404);
-//     }
-
-//     $token = Password::createToken($user);
-
-//     $resetUrl = 'http://localhost:8080/reset-password?token=' . $token . '&email=' .$request->email;
-
-//     Mail::send([], [], function ($message) use ($resetUrl, $request) {
-//         $message->to($request->email)
-//             ->subject('Password Reset Link')
-//             ->html('Click the following link to reset your password: <a href="' . $resetUrl . '">Click here</a>');
-//     });
-
-//     return response()->json([
-//         'message' => 'Password reset link sent successfully',
-//         'resetUrl' => $resetUrl,
-//     ], 200);
-// }
 public function sendResetLinkEmail(Request $request)
 {
     $request->validate(['email' => 'required|email']);
