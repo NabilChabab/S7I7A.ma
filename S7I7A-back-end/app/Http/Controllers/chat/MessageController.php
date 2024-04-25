@@ -17,29 +17,21 @@ class MessageController extends Controller
     public function sendMessage(Request $request)
     {
         $request->validate([
+            'message' => 'required|string',
             'receiver_id' => 'required',
             'sender_id' => 'required',
-            'prescription' => 'nullable|file|mimes:pdf'
         ]);
 
-        $messageData = [
+        $message = Message::create([
             'sender_id' => $request->sender_id,
             'receiver_id' => $request->receiver_id,
-        ];
+            'message' => $request->input('message'),
+        ]);
 
-        if ($request->hasFile('prescription')) {
-            $message = Message::create($messageData);
-            $message->addMediaFromRequest('prescription')->toMediaCollection('media/prescription', 'prescription_media');
-        } else {
-            if ($request->has('message')) {
-                $messageData['message'] = $request->input('message');
-                $message = Message::create($messageData);
 
-                return response()->json(['message' => 'Message sent successfully']);
-            } else {
-                return response()->json(['error' => 'No message or file provided'], 400);
-            }
-        }
+        broadcast(new MessageSent($message))->toOthers();
+
+        return response()->json(['message' => 'Message sent successfully'], 200);
     }
 
 

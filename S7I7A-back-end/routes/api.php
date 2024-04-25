@@ -15,6 +15,7 @@ use App\Http\Controllers\doctors\AppointmentController as DoctorsAppointmentCont
 use App\Http\Controllers\doctors\ArticlesController;
 use App\Http\Controllers\doctors\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\prescription\PrescriptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +39,10 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 
 Route::get('/doctor-details/{id}', [HomeController::class, 'showDoctor']);
 Route::get('/doctor-byCategory/{id}', [HomeController::class, 'showDoctorByCategory']);
+Route::get('article-details/{id}', [HomeController::class, 'showArticle']);
+Route::get('counts', [HomeController::class, 'counts']);
 Route::apiResource('index', HomeController::class);
+Route::apiResource('prescriptions', PrescriptionController::class);
 
 
 
@@ -50,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Protect the admin  routes
     Route::middleware('role:Admin')->prefix('admin')->group(function () {
+        Route::get('/counts', [DashboardHomeController::class, 'counts']);
         Route::patch('/profile/{id}', [DashboardHomeController::class, 'updateProfile']);
         Route::apiResource('dashboard', DashboardHomeController::class);
         Route::apiResource('doctors', DoctorsController::class);
@@ -59,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('article', AdminArticlesController::class);
         Route::apiResource('appointment', AdminAppointmentController::class);
+        Route::get('prescriptions', [PrescriptionController::class , 'patientPrescriptions']);
 
     });
     // Protect the doctor  routes
@@ -72,8 +78,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('patient')->group(function () {
         Route::patch('/profile/{id}', [HomeController::class, 'updateProfile']);
         Route::apiResource('appointment', AppointmentController::class);
-        Route::post('session', [AppointmentController::class ,'session'])->name('session');
-        Route::get('success', [AppointmentController::class , 'success'])->name('success');
+        Route::get('prescriptions', [PrescriptionController::class , 'patientPrescriptions']);
+        Route::post('session', [AppointmentController::class, 'session'])->name('session');
+        Route::get('success', [AppointmentController::class, 'success'])->name('success');
+        Route::get('prescriptions', [PrescriptionController::class , 'patientPrescriptions']);
+
     });
 
     //Chat

@@ -24,7 +24,8 @@ class UpdateAppointmentStatus implements ShouldQueue
             ->get();
 
         foreach ($appointmentsInProgress as $appointment) {
-            $appointment->update(['status' => 'inProgress']);
+            $appointment->status = 'inProgress';
+            $appointment->save();
         }
 
         $completedAppointments = Appointment::where('status', 'inProgress')
@@ -37,9 +38,9 @@ class UpdateAppointmentStatus implements ShouldQueue
             })
             ->get();
 
-
         foreach ($completedAppointments as $appointment) {
-            $appointment->update(['status' => 'completed']);
+            $appointment->status = 'completed';
+            $appointment->save();
         }
     }
 }

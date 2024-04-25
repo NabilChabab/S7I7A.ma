@@ -31,5 +31,12 @@ class AppointmentController extends Controller
         ]);
     }
 
-   
+
+    public function destroy(string $id){
+        $appointment = Appointment::findOrFail($id);
+        $appointment->delete();
+        return response()->json(['message' => 'Appointment deleted successfully']);
+    }
+
+
 }

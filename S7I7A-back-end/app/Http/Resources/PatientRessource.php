@@ -27,6 +27,8 @@ class PatientRessource extends JsonResource
                 'name' => $role->name,
             ];
         }),
+
+        //Role with Ressources also the loading
     ];
 }
 

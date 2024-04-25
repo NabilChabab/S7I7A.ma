@@ -33,7 +33,7 @@ class DoctorRessource extends JsonResource
             'qualification' => $this->qualification,
             'description' => $this->description,
             'address' => $this->address,
-            'category' => $this->category->name,
+            'category' => $this->category?->name,
             'category_id' => $this->category_id,
             'created_at' => $this->user->created_at,
             'appointment_status' => $this->appointments->map(function ($appointment) {

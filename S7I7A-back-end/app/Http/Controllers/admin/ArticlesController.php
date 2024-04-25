@@ -30,6 +30,7 @@ class ArticlesController extends Controller
         $article->update($request->all());
         return response()->json([
             'article' => new ArticleResource($article),
+            'message' => "The article has been updated successfully"
         ]);
     }
 

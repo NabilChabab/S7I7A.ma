@@ -22,8 +22,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $doctors = Doctor::latest()->take(4)->get();
-        $categories = Category::all();
+        $doctors = Doctor::take(4)->get();
+        $categories = Category::latest()->take(8)->get();
         $all_categories = Category::all();
         $articles = Article::where('status' , 'accepted')->latest()->take(3)->get();
         $all_doctors = Doctor::all();
@@ -40,6 +40,14 @@ class HomeController extends Controller
     }
 
     public function counts(){
+
+        $doctors = Doctor::all()->count();
+        $patients = User::all()->count();
+
+        return response()->json([
+            'doctors' => $doctors,
+            'patients' => $patients,
+        ]);
 
     }
 
@@ -89,6 +97,13 @@ class HomeController extends Controller
             'doctorByCategory' => DoctorRessource::collection($doctors),
         ]);
 
+    }
+
+    public function showArticle(string $id){
+        $article = Article::findOrFail($id);
+        return response()->json([
+            'article' => new ArticleResource($article),
+        ]);
     }
 
 

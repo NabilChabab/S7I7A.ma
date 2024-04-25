@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorRessource;
+use App\Mail\DoctorCreatedMail;
 use App\Models\Category;
 use App\Models\Doctor;
 use App\Models\Role;
@@ -14,6 +15,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class DoctorsController extends Controller
@@ -58,6 +60,7 @@ class DoctorsController extends Controller
             $doctor->addMediaFromRequest('profile')->toMediaCollection('media/doctors', 'doctors_media');
 
             $user->roles()->attach(Role::where('name', 'Doctor')->first()->id);
+            Mail::to($user->email)->send(new DoctorCreatedMail($user, $request->password));
 
             return response()->json([
                 'message' => 'Doctor created successfully!',
@@ -71,54 +74,53 @@ class DoctorsController extends Controller
     public function show(string $id)
     {
         $doctor = Doctor::with('user')->findOrFail($id);
-            return response()->json([
-                'doctor' =>new DoctorRessource($doctor)
-            ]);
-
+        return response()->json([
+            'doctor' => new DoctorRessource($doctor)
+        ]);
     }
     public function update(UpdateDoctorRequest $request, string $id)
-{
-    $doctor = Doctor::findOrFail($id);
+    {
+        $doctor = Doctor::findOrFail($id);
 
-    $doctor->update($request->all());
+        $doctor->update($request->all());
 
-    if ($doctor->user) {
-        $doctor->user->update($request->all());
+        if ($doctor->user) {
+            $doctor->user->update($request->all());
+        }
+
+        if ($request->hasFile('profile')) {
+            $doctor->clearMediaCollection('media/doctors');
+            $doctor->addMediaFromRequest('profile')->toMediaCollection('media/doctors', 'doctors_media');
+        }
+
+        return response()->json([
+            'message' => 'Doctor updated successfully!',
+        ]);
     }
-
-    if ($request->hasFile('profile')) {
-        $doctor->clearMediaCollection('media/doctors');
-        $doctor->addMediaFromRequest('profile')->toMediaCollection('media/doctors', 'doctors_media');
-    }
-
-    return response()->json([
-        'message' => 'Doctor updated successfully!',
-    ]);
-}
 
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-{
-    try {
-        $doctors = Doctor::findOrFail($id);
+    {
+        try {
+            $doctors = Doctor::findOrFail($id);
 
-        $user = User::where('id', $doctors->user_id)->first();
+            $user = User::where('id', $doctors->user_id)->first();
 
-        if ($user) {
-            $user->delete();
+            if ($user) {
+                $user->delete();
+            }
+
+            $doctors->delete();
+
+            return response()->json([
+                'message' => 'Doctor deleted successfully!',
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error deleting doctor: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to delete doctor'], 500);
         }
-
-        $doctors->delete();
-
-        return response()->json([
-            'message' => 'Doctor deleted successfully!',
-        ]);
-    } catch (Exception $e) {
-        Log::error('Error deleting doctor: ' . $e->getMessage());
-        return response()->json(['error' => 'Failed to delete doctor'], 500);
     }
-}
 }
